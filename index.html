@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Aslin 💕 Mi Universo Entero</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&display=swap" rel="stylesheet"/>
 <style>
@@ -129,7 +129,16 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:#00000f;touch-acti
 #hint{position:fixed;bottom:68px;left:50%;transform:translateX(-50%);color:rgba(180,140,255,.52);font-family:'Cormorant Garamond',serif;font-size:clamp(11px,2.5vw,13px);letter-spacing:2px;pointer-events:none;z-index:100;text-align:center;white-space:nowrap;display:none;animation:fadeHint 10s ease-in-out 5s forwards}
 @keyframes fadeHint{0%{opacity:1}80%{opacity:.4}100%{opacity:0}}
 
-@media(max-width:600px){.ci{padding:18px 18px 22px}#musbtn{bottom:14px;right:12px;padding:9px 14px;font-size:12px}}
+@media(max-width:600px){
+  .ci{padding:18px 18px 22px}
+  #musbtn{bottom:14px;right:12px;padding:9px 14px;font-size:12px}
+  .i-title{font-size:clamp(20px,7vw,28px)}
+  .i-btn{font-size:clamp(15px,5vw,18px);padding:13px 32px}
+  #counter{top:10px;padding:6px 14px}
+  .cnt-num{font-size:clamp(12px,3.5vw,15px)}
+  .cmsg{font-size:16px;line-height:1.9}
+  .cttl{font-size:clamp(16px,5vw,20px)}
+}
 </style>
 </head>
 <body>
@@ -321,12 +330,13 @@ var PLANETS=[
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
+var isMobile=window.innerWidth<768;
 var W=window.innerWidth,H=window.innerHeight;
 var scene=new THREE.Scene();
 scene.fog=new THREE.FogExp2(0x00000a,.0009);
 var cam=new THREE.PerspectiveCamera(68,W/H,.1,100000);
-var camTheta=.3,camPhi=.28,camDist=65,autoRot=true;
-var flyIn=false,flyProg=0,flyStart=260;
+var camTheta=.3,camPhi=.28,camDist=isMobile?140:65,autoRot=true;
+var flyIn=false,flyProg=0,flyStart=isMobile?320:260;
 
 function startExperience(){
   var intro=document.getElementById('intro');
@@ -363,13 +373,37 @@ document.addEventListener('mousemove',function(e){
   prev={x:e.clientX,y:e.clientY};updateCam();
 });
 cvs.addEventListener('wheel',function(e){camDist=Math.max(4,Math.min(280,camDist+e.deltaY*.05));updateCam();},{passive:true});
-var t0n=null;
-cvs.addEventListener('touchstart',function(e){t0n=e.touches[0];autoRot=false;},{passive:true});
+// ── TOUCH: rotate (1 finger) + pinch zoom (2 fingers) ──
+var t0n=null, pinchDist0=null;
+cvs.addEventListener('touchstart',function(e){
+  autoRot=false;
+  if(e.touches.length===1){t0n=e.touches[0];pinchDist0=null;}
+  else if(e.touches.length===2){
+    t0n=null;
+    var dx=e.touches[0].clientX-e.touches[1].clientX;
+    var dy=e.touches[0].clientY-e.touches[1].clientY;
+    pinchDist0=Math.sqrt(dx*dx+dy*dy);
+  }
+},{passive:true});
 cvs.addEventListener('touchmove',function(e){
-  if(!t0n)return;var t1=e.touches[0];
-  camTheta-=(t1.clientX-t0n.clientX)*.005;
-  camPhi=Math.max(.06,Math.min(Math.PI-.06,camPhi-(t1.clientY-t0n.clientY)*.005));
-  t0n=t1;updateCam();
+  if(e.touches.length===1&&t0n&&!pinchDist0){
+    var t1=e.touches[0];
+    camTheta-=(t1.clientX-t0n.clientX)*.005;
+    camPhi=Math.max(.06,Math.min(Math.PI-.06,camPhi-(t1.clientY-t0n.clientY)*.005));
+    t0n=t1;updateCam();
+  } else if(e.touches.length===2&&pinchDist0!==null){
+    var dx=e.touches[0].clientX-e.touches[1].clientX;
+    var dy=e.touches[0].clientY-e.touches[1].clientY;
+    var newDist=Math.sqrt(dx*dx+dy*dy);
+    var delta=pinchDist0-newDist;
+    camDist=Math.max(4,Math.min(280,camDist+delta*.18));
+    pinchDist0=newDist;
+    updateCam();
+  }
+},{passive:true});
+cvs.addEventListener('touchend',function(e){
+  if(e.touches.length<2)pinchDist0=null;
+  if(e.touches.length===0)t0n=null;
 },{passive:true});
 
 // ── DEVICE TILT (mobile parallax) ──
@@ -745,7 +779,8 @@ function animate(){
   if(flyIn){
     flyProg=Math.min(1,flyProg+.004);
     var ease=1-Math.pow(1-flyProg,4);
-    camDist=flyStart+(65-flyStart)*ease;
+    var targetDist=isMobile?140:65;
+    camDist=flyStart+(targetDist-flyStart)*ease;
     if(flyProg>=1)flyIn=false;
     updateCam();
   }
