@@ -2,312 +2,264 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
 <title>Aslin 💕 Mi Galaxia</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&display=swap" rel="stylesheet"/>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100vw;height:100vh;overflow:hidden;background:#00000f}
-#c{display:block;position:fixed;top:0;left:0;width:100vw;height:100vh}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{width:100vw;height:100vh;overflow:hidden;background:#00000f;touch-action:none}
+#c{position:fixed;top:0;left:0;width:100%;height:100%;touch-action:none}
 
-/* ── MUSIC BUTTON ── */
+/* ── INTRO SCREEN ── */
+#intro{
+  position:fixed;inset:0;z-index:3000;
+  background:radial-gradient(ellipse at center,rgba(30,5,80,.98),rgba(0,0,15,1));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+  transition:opacity 1.2s ease;
+}
+#intro.fadeout{opacity:0;pointer-events:none}
+.intro-rose{font-size:clamp(48px,10vw,72px);animation:roseSpin 3s ease-in-out infinite}
+@keyframes roseSpin{0%,100%{transform:scale(1) rotate(-8deg);filter:drop-shadow(0 0 12px rgba(200,80,255,.6))}50%{transform:scale(1.15) rotate(8deg);filter:drop-shadow(0 0 28px rgba(200,80,255,.9))}}
+.intro-title{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(22px,5vw,36px);background:linear-gradient(120deg,#e0c8ff,#a5f3fc,#f0abfc,#ffd6e0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;padding:0 20px}
+.intro-sub{font-family:'Cinzel Decorative',serif;font-size:clamp(8px,2vw,11px);letter-spacing:5px;color:rgba(180,140,255,.65);text-align:center}
+.intro-btn{
+  margin-top:10px;padding:14px 38px;border-radius:50px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,#8b2fff,#e91e8c);
+  color:#fff;font-family:'Cormorant Garamond',serif;font-size:18px;letter-spacing:2px;
+  box-shadow:0 0 30px rgba(140,40,255,.6),0 4px 20px rgba(0,0,0,.5);
+  transition:.3s;animation:btnPulse 2s ease-in-out infinite;
+}
+.intro-btn:hover{transform:scale(1.08);box-shadow:0 0 50px rgba(180,60,255,.9)}
+@keyframes btnPulse{0%,100%{box-shadow:0 0 30px rgba(140,40,255,.5)}50%{box-shadow:0 0 55px rgba(180,80,255,.9)}}
+.intro-crowns{font-size:clamp(18px,4vw,26px);letter-spacing:12px;color:rgba(255,200,80,.6);animation:crownGlow 2s ease-in-out infinite}
+@keyframes crownGlow{0%,100%{filter:drop-shadow(0 0 4px rgba(255,200,80,.4));opacity:.7}50%{filter:drop-shadow(0 0 14px rgba(255,220,80,.9));opacity:1}}
+
+/* ── MUSIC BTN ── */
 #musbtn{
-  position:fixed;bottom:22px;right:22px;z-index:400;
-  background:linear-gradient(135deg,rgba(80,20,200,.85),rgba(0,120,220,.85));
-  border:1px solid rgba(160,120,255,.5);border-radius:50px;
-  padding:10px 18px;color:#e0d4ff;font-size:13px;
+  position:fixed;bottom:20px;right:16px;z-index:400;
+  background:linear-gradient(135deg,rgba(100,20,220,.92),rgba(0,100,200,.92));
+  border:1px solid rgba(180,140,255,.5);border-radius:50px;
+  padding:11px 20px;color:#e8d8ff;font-size:13px;
   cursor:pointer;display:flex;align-items:center;gap:8px;
-  box-shadow:0 0 24px rgba(100,60,255,.4);transition:.3s;
-  font-family:'Cormorant Garamond',serif;letter-spacing:1px;
-  backdrop-filter:blur(8px);
+  box-shadow:0 0 28px rgba(120,60,255,.5),0 4px 20px rgba(0,0,0,.6);
+  transition:.3s;font-family:'Cormorant Garamond',serif;letter-spacing:1.5px;
+  backdrop-filter:blur(10px);
 }
-#musbtn:hover{box-shadow:0 0 38px rgba(120,80,255,.7);transform:scale(1.05);}
-#musbtn.playing{animation:mbpulse 2s ease-in-out infinite;}
-.note{font-size:18px;animation:spin 3s linear infinite;}
-@keyframes spin{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
-@keyframes mbpulse{0%,100%{box-shadow:0 0 24px rgba(100,60,255,.4)}50%{box-shadow:0 0 44px rgba(120,80,255,.8)}}
+#musbtn:hover{box-shadow:0 0 44px rgba(160,80,255,.8);transform:scale(1.06)}
+.note{font-size:20px;animation:noteWave 2s ease-in-out infinite}
+@keyframes noteWave{0%,100%{transform:rotate(-12deg) scale(1)}50%{transform:rotate(12deg) scale(1.15)}}
 
-/* ── FLOATING HEARTS ── */
-.fheart{
-  position:fixed;pointer-events:none;z-index:150;
-  font-size:18px;animation:floatUp 4s ease-in forwards;
-}
-@keyframes floatUp{
-  0%{opacity:0;transform:translateY(0) scale(.5)}
-  20%{opacity:1;transform:translateY(-30px) scale(1)}
-  100%{opacity:0;transform:translateY(-200px) scale(.7)}
-}
+/* ── FLOATING PARTICLES ── */
+.fpart{position:fixed;pointer-events:none;z-index:150;animation:floatUp 5s ease-in forwards}
+@keyframes floatUp{0%{opacity:0;transform:translateY(0) scale(.4) rotate(-15deg)}15%{opacity:1;transform:translateY(-25px) scale(1) rotate(5deg)}100%{opacity:0;transform:translateY(-240px) scale(.6) rotate(-10deg)}}
+
+/* ── CLICK BURST ── */
+.burst{position:fixed;pointer-events:none;z-index:160;font-size:20px;animation:burstAnim .8s ease-out forwards}
+@keyframes burstAnim{0%{opacity:1;transform:scale(0) rotate(0deg)}100%{opacity:0;transform:scale(2.5) rotate(180deg)}}
+
+/* ── MUSIC POPUP ── */
+#muspopup{display:none;position:fixed;inset:0;z-index:2000;background:radial-gradient(ellipse at center,rgba(20,5,60,.95),rgba(0,0,20,.98));backdrop-filter:blur(18px);justify-content:center;align-items:center;}
+#muspopup.show{display:flex}
+.muspop-box{background:radial-gradient(ellipse at 30% 20%,rgba(140,60,255,.2),transparent 55%),radial-gradient(ellipse at 75% 80%,rgba(0,140,255,.15),transparent 55%),linear-gradient(155deg,rgba(14,6,48,.98),rgba(6,3,30,.99));border:1px solid rgba(180,130,255,.4);border-radius:22px;padding:38px 40px;text-align:center;box-shadow:0 0 70px rgba(140,40,255,.35);max-width:400px;width:92vw;}
+.muspop-title{font-family:'Cinzel Decorative',serif;font-size:10px;letter-spacing:5px;color:rgba(200,160,255,.7);margin-bottom:12px;text-transform:uppercase}
+.muspop-icon{font-size:50px;margin-bottom:10px;animation:popIcon 2s ease-in-out infinite}
+@keyframes popIcon{0%,100%{transform:scale(1) rotate(-5deg)}50%{transform:scale(1.12) rotate(5deg)}}
+.muspop-song{font-family:'Playfair Display',serif;font-size:24px;font-style:italic;background:linear-gradient(135deg,#f472b6,#818cf8,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:5px}
+.muspop-artist{font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(180,160,255,.65);margin-bottom:28px;letter-spacing:1px}
+.muspop-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.muspop-btn{font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:1px;padding:12px 24px;border-radius:50px;cursor:pointer;border:none;transition:.25s}
+.muspop-open{background:linear-gradient(135deg,#8b2fff,#0099cc);color:#fff;box-shadow:0 0 22px rgba(120,60,255,.5)}
+.muspop-open:hover{transform:scale(1.07);box-shadow:0 0 35px rgba(140,80,255,.85)}
+.muspop-skip{background:rgba(255,255,255,.07);color:rgba(200,180,255,.65);border:1px solid rgba(160,120,255,.3)}
+.muspop-skip:hover{background:rgba(255,255,255,.13)}
 
 /* ── OVERLAY ── */
-#overlay{
-  display:none;position:fixed;inset:0;z-index:999;
-  background:radial-gradient(ellipse at 40% 30%,rgba(30,10,80,.88),rgba(0,5,30,.95));
-  backdrop-filter:blur(14px);
-  justify-content:center;align-items:center;
-}
+#overlay{display:none;position:fixed;inset:0;z-index:999;background:radial-gradient(ellipse at 40% 30%,rgba(30,8,90,.92),rgba(0,5,28,.97));backdrop-filter:blur(18px);justify-content:center;align-items:center;padding:16px;}
 #overlay.open{display:flex}
 
 /* ── CARD ── */
 #card{
-  position:relative;
-  width:min(520px,92vw);
-  background:
-    radial-gradient(ellipse at 25% 15%,rgba(120,60,255,.22) 0%,transparent 50%),
-    radial-gradient(ellipse at 80% 85%,rgba(0,160,255,.16) 0%,transparent 50%),
-    radial-gradient(ellipse at 60% 50%,rgba(180,80,255,.1) 0%,transparent 60%),
-    linear-gradient(160deg,rgba(12,6,40,0.97),rgba(6,4,28,0.99));
-  border-radius:26px;
-  padding:0;
-  overflow:visible;
-  box-shadow:
-    0 0 0 1px rgba(160,120,255,.35),
-    0 0 50px rgba(100,50,255,.3),
-    0 0 100px rgba(0,120,255,.12),
-    0 0 200px rgba(80,30,180,.08);
+  position:relative;width:min(540px,96vw);max-height:88vh;overflow-y:auto;
+  background:radial-gradient(ellipse at 20% 10%,rgba(150,50,255,.24),transparent 48%),radial-gradient(ellipse at 85% 88%,rgba(0,150,255,.18),transparent 48%),radial-gradient(ellipse at 55% 55%,rgba(200,50,255,.1),transparent 60%),linear-gradient(158deg,rgba(12,5,42,.99),rgba(5,3,25,1));
+  border-radius:28px;overflow:hidden;
+  box-shadow:0 0 0 1.5px rgba(200,140,255,.45),0 0 70px rgba(130,50,255,.4),0 0 140px rgba(0,120,255,.16),0 0 0 4px rgba(255,150,220,.06);
   animation:cardPop .55s cubic-bezier(.34,1.56,.64,1);
+  scrollbar-width:thin;scrollbar-color:rgba(140,80,255,.4) transparent;
 }
-@keyframes cardPop{from{transform:scale(.45) rotateY(20deg);opacity:0}to{transform:scale(1) rotateY(0);opacity:1}}
-
-/* corner stars */
-.cstar{
-  position:absolute;font-size:28px;pointer-events:none;
-  animation:ctwinkle 2s ease-in-out infinite;
-}
-.cstar:nth-child(1){top:-18px;left:-18px;animation-delay:0s;}
-.cstar:nth-child(2){top:-18px;right:-18px;animation-delay:.5s;}
-.cstar:nth-child(3){bottom:-18px;left:-18px;animation-delay:1s;}
-.cstar:nth-child(4){bottom:-18px;right:-18px;animation-delay:1.5s;}
-@keyframes ctwinkle{0%,100%{opacity:.4;transform:scale(.8) rotate(0deg)}50%{opacity:1;transform:scale(1.2) rotate(15deg)}}
-
-/* top bar */
-.card-top{
-  width:100%;height:5px;border-radius:26px 26px 0 0;
-  background:linear-gradient(90deg,#a855f7,#38bdf8,#f472b6,#818cf8,#a855f7);
-  background-size:300% 100%;
-  animation:barShift 4s linear infinite;
-}
+#card::-webkit-scrollbar{width:4px}
+#card::-webkit-scrollbar-thumb{background:rgba(140,80,255,.4);border-radius:4px}
+@keyframes cardPop{from{transform:scale(.42) rotateY(18deg) rotateX(8deg);opacity:0}to{transform:scale(1) rotateY(0) rotateX(0);opacity:1}}
+.card-top{width:100%;height:6px;background:linear-gradient(90deg,#a855f7,#38bdf8,#f472b6,#fbbf24,#818cf8,#a855f7);background-size:300% 100%;animation:barShift 3s linear infinite}
 @keyframes barShift{0%{background-position:0%}100%{background-position:300%}}
+.card-corner{position:absolute;font-size:22px;pointer-events:none;z-index:10;animation:cOrn 2.5s ease-in-out infinite}
+.card-corner.tl{top:12px;left:14px}.card-corner.tr{top:12px;right:42px;animation-delay:.6s}.card-corner.bl{bottom:14px;left:14px;animation-delay:1.2s}.card-corner.br{bottom:14px;right:14px;animation-delay:1.8s}
+@keyframes cOrn{0%,100%{opacity:.5;transform:scale(.88) rotate(0deg)}50%{opacity:1;transform:scale(1.18) rotate(22deg)}}
+#cStars{position:absolute;inset:0;pointer-events:none;z-index:0}
+.card-inner{position:relative;z-index:1;padding:22px 28px 28px}
+#close-btn{position:absolute;top:14px;right:14px;background:rgba(140,80,255,.2);border:1px solid rgba(180,130,255,.45);color:rgba(210,180,255,.9);font-size:15px;cursor:pointer;border-radius:50%;width:34px;height:34px;min-width:34px;display:flex;align-items:center;justify-content:center;transition:.3s;z-index:20;}
+#close-btn:hover{color:#fff;background:rgba(180,100,255,.55);transform:rotate(90deg) scale(1.12)}
 
-/* card stars canvas */
-#cStars{position:absolute;inset:0;pointer-events:none;z-index:0;border-radius:26px;overflow:hidden;}
-
-.card-inner{position:relative;z-index:1;padding:30px 38px 34px;}
-
-#close-btn{
-  position:absolute;top:13px;right:15px;
-  background:rgba(140,100,255,.15);border:1px solid rgba(160,120,255,.35);
-  color:rgba(200,170,255,.9);font-size:15px;cursor:pointer;
-  border-radius:50%;width:32px;height:32px;
-  display:flex;align-items:center;justify-content:center;
-  transition:.3s;z-index:10;
-}
-#close-btn:hover{color:#fff;background:rgba(160,100,255,.45);transform:rotate(90deg) scale(1.1);}
-
-.card-deco{text-align:center;font-size:28px;letter-spacing:10px;margin-bottom:10px;}
-.card-deco span{display:inline-block;animation:dstar 1.8s ease-in-out infinite;}
-.card-deco span:nth-child(1){animation-delay:0s}
-.card-deco span:nth-child(2){animation-delay:.3s}
-.card-deco span:nth-child(3){animation-delay:.6s}
-@keyframes dstar{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.3) rotate(20deg);opacity:1}}
-
-.sub{
-  font-family:'Cinzel Decorative',serif;font-size:9.5px;
-  letter-spacing:5px;text-transform:uppercase;
-  color:rgba(160,220,255,.75);margin-bottom:10px;text-align:center;
-}
-
-.ttl{
-  font-family:'Playfair Display',serif;font-size:21px;font-weight:700;font-style:italic;
-  background:linear-gradient(120deg,#e0c8ff 0%,#a5f3fc 40%,#f0abfc 70%,#e0c8ff 100%);
-  background-size:200% 100%;
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  animation:titleShift 5s linear infinite;
-  margin-bottom:18px;line-height:1.45;text-align:center;
-}
+/* card content */
+.card-crown{text-align:center;font-size:clamp(22px,4.5vw,30px);animation:crownGlow 2s ease-in-out infinite;margin-bottom:6px;letter-spacing:12px}
+.card-roses{text-align:center;font-size:clamp(18px,4vw,26px);letter-spacing:8px;margin-bottom:8px;line-height:1}
+.card-roses span{display:inline-block;animation:roseWave 2.2s ease-in-out infinite}
+.card-roses span:nth-child(2){animation-delay:.25s;font-size:.65em;opacity:.55}.card-roses span:nth-child(4){animation-delay:.25s;font-size:.65em;opacity:.55}.card-roses span:nth-child(3){animation-delay:.5s}
+@keyframes roseWave{0%,100%{transform:scale(1) rotate(-6deg)}50%{transform:scale(1.2) rotate(6deg)}}
+.card-deco{text-align:center;font-size:clamp(12px,2.5vw,16px);letter-spacing:6px;margin-bottom:10px;color:rgba(180,200,255,.45)}
+.card-deco span{display:inline-block;animation:dStar 1.9s ease-in-out infinite}
+.card-deco span:nth-child(odd){animation-delay:.35s}
+@keyframes dStar{0%,100%{opacity:.4;transform:scale(.9)}50%{opacity:.9;transform:scale(1.2)}}
+.sub{font-family:'Cinzel Decorative',serif;font-size:clamp(8px,1.8vw,10px);letter-spacing:5px;text-transform:uppercase;color:rgba(160,220,255,.82);margin-bottom:10px;text-align:center}
+.ttl{font-family:'Playfair Display',serif;font-size:clamp(17px,3.5vw,22px);font-weight:700;font-style:italic;background:linear-gradient(120deg,#e0c8ff 0%,#a5f3fc 32%,#f0abfc 62%,#ffd6e0 82%,#e0c8ff 100%);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:titleShift 4.5s linear infinite;margin-bottom:16px;line-height:1.45;text-align:center}
 @keyframes titleShift{0%{background-position:0%}100%{background-position:200%}}
-
-.divider{
-  display:flex;align-items:center;gap:12px;
-  margin:0 auto 22px;justify-content:center;
-}
-.divider::before,.divider::after{
-  content:'';flex:1;height:1px;max-width:55px;
-  background:linear-gradient(90deg,transparent,rgba(160,120,255,.7));
-}
-.divider::after{background:linear-gradient(270deg,transparent,rgba(160,120,255,.7))}
-.divider-gem{color:#c8a8ff;font-size:18px;animation:gemSpin 4s linear infinite;}
+.divider{display:flex;align-items:center;gap:8px;margin:0 auto 18px;justify-content:center}
+.divider::before,.divider::after{content:'';flex:1;height:1px;max-width:50px;background:linear-gradient(90deg,transparent,rgba(200,140,255,.65))}
+.divider::after{background:linear-gradient(270deg,transparent,rgba(200,140,255,.65))}
+.divider-inner{color:rgba(230,180,255,.9);font-size:clamp(14px,3vw,18px);letter-spacing:6px;animation:gemSpin 4s linear infinite}
 @keyframes gemSpin{0%,100%{transform:scale(1)}50%{transform:scale(1.3) rotate(180deg)}}
-
-.msg{
-  font-family:'Cormorant Garamond',serif;font-size:17px;
-  line-height:2.1;
-  color:rgba(240,235,255,.95);
-  text-align:center;white-space:pre-line;font-style:italic;
-  text-shadow:0 0 30px rgba(140,100,255,.3);
-}
-
-.hts{
-  font-size:26px;margin-top:22px;letter-spacing:10px;text-align:center;
-  display:block;animation:hb 1.4s ease-in-out infinite;
-}
+.msg{font-family:'Cormorant Garamond',serif;font-size:clamp(15px,3.2vw,17.5px);line-height:2.05;color:rgba(242,236,255,.96);text-align:center;white-space:pre-line;font-style:italic;text-shadow:0 0 35px rgba(150,80,255,.35);background:rgba(255,255,255,.03);border-radius:16px;padding:16px 18px;border:1px solid rgba(180,120,255,.2)}
+.card-roses-bottom{text-align:center;font-size:clamp(16px,3.5vw,22px);letter-spacing:6px;margin-top:16px}
+.card-roses-bottom span{display:inline-block;animation:roseWave 2.2s ease-in-out infinite}
+.card-roses-bottom span:nth-child(odd){animation-delay:.35s}
+.hts{font-size:clamp(24px,5vw,30px);margin-top:14px;letter-spacing:8px;text-align:center;display:block;animation:hb 1.4s ease-in-out infinite}
 @keyframes hb{0%,100%{transform:scale(1)}50%{transform:scale(1.22)}}
-
-.card-bottom{
-  margin-top:20px;text-align:center;
-  font-family:'Cinzel Decorative',serif;font-size:8.5px;
-  letter-spacing:4px;color:rgba(160,180,255,.45);
-  border-top:1px solid rgba(140,100,255,.2);padding-top:14px;
-}
+.card-sig{margin-top:18px;text-align:center;border-top:1px solid rgba(180,120,255,.25);padding-top:14px}
+.card-sig-crown{font-size:16px;letter-spacing:8px;color:rgba(255,200,80,.55);margin-bottom:5px;animation:crownGlow 2s ease-in-out infinite}
+.card-sig-text{font-family:'Cinzel Decorative',serif;font-size:clamp(7px,1.6vw,8.5px);letter-spacing:3px;color:rgba(160,180,255,.45)}
 
 /* ── TOOLTIP ── */
-#tip{
-  position:fixed;z-index:300;
-  background:linear-gradient(135deg,rgba(20,8,60,.95),rgba(8,4,40,.95));
-  border:1px solid rgba(140,100,255,.4);border-radius:10px;
-  padding:6px 14px;color:#d4c8ff;
-  font-family:'Cormorant Garamond',serif;font-size:14px;
-  pointer-events:none;display:none;white-space:nowrap;
-  box-shadow:0 0 20px rgba(100,60,255,.35);
-}
+#tip{position:fixed;z-index:300;background:linear-gradient(135deg,rgba(18,6,55,.96),rgba(8,3,38,.96));border:1px solid rgba(180,120,255,.5);border-radius:12px;padding:7px 16px;color:#d8c8ff;font-family:'Cormorant Garamond',serif;font-size:14px;pointer-events:none;display:none;white-space:nowrap;box-shadow:0 0 22px rgba(130,60,255,.45);letter-spacing:1px}
 
-/* music popup */
-#muspopup{
-  display:none;position:fixed;inset:0;z-index:2000;
-  background:rgba(0,0,10,.92);backdrop-filter:blur(16px);
-  justify-content:center;align-items:center;
-}
-#muspopup.show{display:flex}
-.muspop-box{
-  background:linear-gradient(145deg,rgba(10,4,40,.98),rgba(5,2,25,.98));
-  border:1px solid rgba(160,60,255,.4);
-  border-radius:20px;padding:36px 40px;text-align:center;
-  box-shadow:0 0 60px rgba(140,40,255,.3),0 0 0 1px rgba(200,60,60,.15);
-  max-width:380px;width:90vw;
-}
-.muspop-title{
-  font-family:'Cinzel Decorative',serif;font-size:11px;letter-spacing:4px;
-  color:rgba(200,160,255,.7);margin-bottom:10px;text-transform:uppercase;
-}
-.muspop-song{
-  font-family:'Playfair Display',serif;font-size:22px;font-style:italic;
-  background:linear-gradient(135deg,#f472b6,#818cf8,#38bdf8);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  margin-bottom:6px;
-}
-.muspop-artist{
-  font-family:'Cormorant Garamond',serif;font-size:14px;
-  color:rgba(180,160,255,.6);margin-bottom:28px;
-}
-.muspop-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
-.muspop-btn{
-  font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:1px;
-  padding:10px 20px;border-radius:50px;cursor:pointer;border:none;transition:.25s;
-}
-.muspop-open{
-  background:linear-gradient(135deg,#7b2fff,#0099cc);
-  color:#fff;box-shadow:0 0 20px rgba(120,60,255,.5);
-}
-.muspop-open:hover{transform:scale(1.05);box-shadow:0 0 30px rgba(120,60,255,.8);}
-.muspop-close{
-  background:rgba(255,255,255,.08);color:rgba(200,180,255,.7);
-  border:1px solid rgba(160,120,255,.3);
-}
-.muspop-close:hover{background:rgba(255,255,255,.14);}
+/* ── RIPPLE OVERLAY ── */
+#ripple-canvas{position:fixed;inset:0;pointer-events:none;z-index:5;opacity:.18}
+
+/* ── HINT ── */
+#hint{position:fixed;bottom:68px;left:50%;transform:translateX(-50%);color:rgba(180,140,255,.55);font-family:'Cormorant Garamond',serif;font-size:clamp(11px,2.5vw,13px);letter-spacing:2px;pointer-events:none;z-index:100;text-align:center;white-space:nowrap;animation:fadeHint 8s ease-in-out 4s forwards}
+@keyframes fadeHint{0%{opacity:1}80%{opacity:.4}100%{opacity:0}}
+
+@media(max-width:600px){.card-inner{padding:18px 18px 22px}#musbtn{bottom:14px;right:12px;padding:9px 14px;font-size:12px}}
 </style>
 </head>
 <body>
+
+<!-- INTRO -->
+<div id="intro">
+  <div class="intro-crowns">♛ ✦ ♛</div>
+  <div class="intro-rose">🌹</div>
+  <div class="intro-title">Para Aslin,<br>mi galaxia entera</div>
+  <div class="intro-sub">✦ un universo creado solo para ti ✦</div>
+  <button class="intro-btn" onclick="startExperience()">Entrar a tu galaxia</button>
+  <div class="intro-crowns">♛ ✦ ♛</div>
+</div>
+
 <canvas id="c"></canvas>
+<canvas id="ripple-canvas"></canvas>
 
 <!-- Music popup -->
 <div id="muspopup">
   <div class="muspop-box">
-    <div class="muspop-title">🎵 Nuestra canción</div>
+    <div class="muspop-title">♛ Nuestra canción ♛</div>
+    <div class="muspop-icon">🌹</div>
     <div class="muspop-song">Siesta Freestyle</div>
     <div class="muspop-artist">Lewis OfMan &amp; Alicia te quiero</div>
     <div class="muspop-btns">
-      <button class="muspop-btn muspop-open" onclick="openSong()">▶ Abrir en YouTube</button>
-      <button class="muspop-btn muspop-close" onclick="closeMuspop()">Cerrar</button>
+      <button class="muspop-btn muspop-open" onclick="openSong()">▶ Escuchar en YouTube</button>
+      <button class="muspop-btn muspop-skip" onclick="closeMuspop()">Ahora no</button>
     </div>
   </div>
 </div>
 
+<!-- Letter modal -->
 <div id="overlay">
   <div id="card">
     <canvas id="cStars"></canvas>
-    <span class="cstar">✦</span>
-    <span class="cstar">✦</span>
-    <span class="cstar">✦</span>
-    <span class="cstar">✦</span>
+    <span class="card-corner tl">🌹</span>
+    <span class="card-corner tr">✦</span>
+    <span class="card-corner bl">✦</span>
+    <span class="card-corner br">🌹</span>
     <div class="card-top"></div>
     <div class="card-inner">
       <button id="close-btn">✕</button>
-      <div class="card-deco"><span>✦</span><span>✧</span><span>✦</span></div>
+      <div class="card-crown">♛ ♛ ♛</div>
+      <div class="card-roses"><span>🌹</span><span>✦</span><span>🌹</span><span>✦</span><span>🌹</span></div>
+      <div class="card-deco"><span>✦</span><span>✧</span><span>✦</span><span>✧</span><span>✦</span></div>
       <div class="sub" id="p-sub"></div>
       <div class="ttl" id="p-ttl"></div>
-      <div class="divider"><span class="divider-gem">❋</span></div>
+      <div class="divider"><span class="divider-inner">🌹 ❋ 🌹</span></div>
       <div class="msg" id="p-msg"></div>
+      <div class="card-roses-bottom"><span>🌹</span><span>✦</span><span>💜</span><span>✦</span><span>🌹</span></div>
       <span class="hts" id="p-hts"></span>
-      <div class="card-bottom">— Para Aslin, con todo mi amor infinito —</div>
+      <div class="card-sig">
+        <div class="card-sig-crown">♛ ✦ ♛</div>
+        <div class="card-sig-text">— Con todo mi amor infinito, para Aslin —</div>
+      </div>
     </div>
   </div>
 </div>
 
-<div id="tip">✦ Toca para abrir</div>
-<button id="musbtn"><span class="note">♪</span> <span id="muslabel">Reproducir</span></button>
+<div id="tip"></div>
+<button id="musbtn" style="display:none"><span class="note">♪</span> Nuestra canción</button>
+<div id="hint" style="display:none">✦ Toca un planeta para abrir una carta ✦</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-// ── MUSIC POPUP ──
-function openSong(){
-  window.open('https://youtu.be/MLZj56EZzBc?si=bW6y7MMSEQc4EAKS','_blank');
-  closeMuspop();
+// ── INTRO ──
+function startExperience(){
+  var intro=document.getElementById('intro');
+  intro.classList.add('fadeout');
+  setTimeout(function(){
+    intro.style.display='none';
+    document.getElementById('musbtn').style.display='flex';
+    document.getElementById('hint').style.display='block';
+    setTimeout(function(){document.getElementById('muspopup').classList.add('show');},600);
+    startCameraFlyIn();
+  },1200);
 }
-function closeMuspop(){
-  document.getElementById('muspopup').classList.remove('show');
-}
-var musbtn=document.getElementById('musbtn');
-var muslabel=document.getElementById('muslabel');
-var muspopShown=false;
-musbtn.onclick=function(e){
-  e.stopPropagation();
-  document.getElementById('muspopup').classList.add('show');
-};
-// show popup on first click
-document.addEventListener('click',function once(e){
-  if(e.target.closest && e.target.closest('#muspopup'))return;
-  if(e.target===musbtn||e.target.closest('#musbtn'))return;
-  document.getElementById('muspopup').classList.add('show');
-  document.removeEventListener('click',once);
-},{capture:false,once:true});
+function openSong(){window.open('https://youtu.be/MLZj56EZzBc','_blank');closeMuspop();}
+function closeMuspop(){document.getElementById('muspopup').classList.remove('show');}
+document.getElementById('musbtn').onclick=function(e){e.stopPropagation();document.getElementById('muspopup').classList.add('show');};
 
-// ── FLOATING HEARTS ──
-function spawnHeart(){
-  var h=document.createElement('div');
-  h.className='fheart';
-  var emojis=['💜','❤️','💙','✨','💫','❤️‍🔥','🌟','💎','💕','🩷','💗','🌹'];
-  h.textContent=emojis[Math.floor(Math.random()*emojis.length)];
-  h.style.left=Math.random()*100+'vw';
-  h.style.bottom='10px';
-  h.style.fontSize=(14+Math.random()*18)+'px';
+// ── FLOATING PARTICLES ──
+var floatEmojis=['🌹','💜','💙','✦','💫','🌟','💎','💕','🩷','💗','✨','♛','🌸','❤️‍🔥'];
+function spawnParticle(){
+  var h=document.createElement('div');h.className='fpart';
+  h.textContent=floatEmojis[Math.floor(Math.random()*floatEmojis.length)];
+  h.style.left=(2+Math.random()*96)+'vw';
+  h.style.bottom=(Math.random()*8)+'px';
+  h.style.fontSize=(12+Math.random()*16)+'px';
+  h.style.animationDuration=(3.8+Math.random()*2.5)+'s';
   document.body.appendChild(h);
-  setTimeout(function(){h.remove();},4200);
+  setTimeout(function(){h.remove();},6500);
 }
-setInterval(spawnHeart,1800);
+setInterval(spawnParticle,1600);
 
-// ── CARD MINI STARS ──
+// ── CLICK BURST ──
+document.getElementById('c').addEventListener('click',function(e){
+  if(document.getElementById('overlay').classList.contains('open'))return;
+  var emojis=['🌹','💜','✦','💫','💕','🌟','♛'];
+  for(var i=0;i<5;i++){
+    var b=document.createElement('div');b.className='burst';
+    b.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    b.style.left=(e.clientX-20+Math.random()*40-40)+'px';
+    b.style.top=(e.clientY-20+Math.random()*40-40)+'px';
+    b.style.animationDuration=(.5+Math.random()*.5)+'s';
+    document.body.appendChild(b);
+    setTimeout(function(){b.remove();},1000);
+  }
+});
+
+// card stars canvas
 function initCardStars(){
   var cs=document.getElementById('cStars');
   var card=document.getElementById('card');
-  cs.width=card.offsetWidth||520;cs.height=card.offsetHeight||480;
+  cs.width=card.offsetWidth||520;cs.height=card.offsetHeight||540;
   var ctx=cs.getContext('2d');
   var stars=[];
-  for(var i=0;i<100;i++) stars.push({
+  for(var i=0;i<130;i++)stars.push({
     x:Math.random()*cs.width,y:Math.random()*cs.height,
-    r:.3+Math.random()*1.8,o:Math.random(),
-    s:0.004+Math.random()*.018,
-    c:['rgba(180,140,255,','rgba(120,200,255,','rgba(255,180,230,'][Math.floor(Math.random()*3)]
+    r:.2+Math.random()*1.7,o:Math.random(),s:.003+Math.random()*.018,
+    c:['rgba(210,160,255,','rgba(120,200,255,','rgba(255,190,230,','rgba(255,230,120,'][Math.floor(Math.random()*4)]
   });
-  function drawCS(){
+  (function drawCS(){
     ctx.clearRect(0,0,cs.width,cs.height);
     for(var i=0;i<stars.length;i++){
       var s=stars[i];s.o+=s.s;if(s.o>1||s.o<0)s.s=-s.s;
@@ -315,11 +267,8 @@ function initCardStars(){
       ctx.fillStyle=s.c+s.o.toFixed(2)+')';ctx.fill();
     }
     requestAnimationFrame(drawCS);
-  }
-  drawCS();
+  })();
 }
-
-// ── CLOSE / OPEN ──
 document.getElementById('close-btn').onclick=closeLetter;
 document.getElementById('overlay').onclick=function(e){if(e.target===this)closeLetter();};
 function closeLetter(){document.getElementById('overlay').classList.remove('open');}
@@ -329,47 +278,34 @@ function openLetter(d){
   document.getElementById('p-msg').textContent=d.msg;
   document.getElementById('p-hts').textContent=d.hearts;
   document.getElementById('overlay').classList.add('open');
-  setTimeout(initCardStars,60);
+  setTimeout(initCardStars,80);
 }
 
-// ── PLANETS DATA (7 planetas) ──
+// ── 9 PLANETS ──
 var PLANETS=[
-  {name:'Planeta Amor',title:'Para Aslin, con todo mi corazón 💕',
-   msg:'Desde el primer momento en que te vi,\nsupe que eras especial.\nEres la razón por la que sonrío cada día,\nla persona que hace que todo valga la pena.\n\nTe amo con cada parte de mí.',
-   hearts:'♥ ♥ ♥',r:36,speed:.0008,tilt:.18,size:3.2,
-   c1:[0.85,0.25,0.95],c2:[0.35,0.05,0.5],gc:'rgba(180,60,255,.65)'},
-  {name:'Planeta Felicidad',title:'Aslin, eres mi felicidad 🌟',
-   msg:'Contigo aprendí que la felicidad\nno es un lugar al que se llega,\nsino una persona con quien estás.\n\nEsa persona eres tú.\nSiempre tú.',
-   hearts:'🌟 ♥ 🌟',r:54,speed:.0005,tilt:-.3,size:2.8,
-   c1:[0.1,0.55,1.0],c2:[0.02,0.15,0.55],gc:'rgba(20,140,255,.65)'},
-  {name:'Planeta Eternidad',title:'Mi amor por ti es eterno ∞',
-   msg:'Como las estrellas que nunca se apagan,\ncomo la galaxia que gira sin cesar,\nmi amor por ti no tiene fin.\n\nAslin, te amaré siempre.\nEn esta vida y en todas las que vengan.',
-   hearts:'♥ ∞ ♥',r:70,speed:.0003,tilt:.45,size:4.0,
-   c1:[0.0,0.85,0.75],c2:[0.0,0.3,0.45],gc:'rgba(0,210,190,.6)'},
-  {name:'Planeta Sueños',title:'Aslin, eres mi sueño real 💫',
-   msg:'Pensé que el amor así solo existía\nen las películas y las canciones.\nHasta que llegaste tú.\n\nEres todo lo que soñé\ny mil cosas más que nunca imaginé.',
-   hearts:'💫 ♥ 💫',r:86,speed:.00024,tilt:-.55,size:3.5,
-   c1:[0.55,0.08,0.92],c2:[0.18,0.0,0.42],gc:'rgba(140,40,240,.65)'},
-  {name:'Planeta Promesas',title:'Mis promesas para ti 🤍',
-   msg:'Te prometo estar siempre,\nen los días de sol y en los de lluvia.\nTe prometo hacerte reír\ncuando más lo necesites.\n\nEres mi mayor promesa cumplida.',
-   hearts:'🤍 💜 🤍',r:100,speed:.00018,tilt:.35,size:3.0,
-   c1:[0.9,0.7,0.3],c2:[0.5,0.3,0.05],gc:'rgba(220,160,40,.55)'},
-  {name:'Planeta Momentos',title:'Cada momento contigo ✨',
-   msg:'Cada mirada, cada risa,\ncada momento junto a ti\nes un tesoro que guardo\nen lo más profundo de mi corazón.\n\nGracias por existir, Aslin.',
-   hearts:'✨ ♥ ✨',r:116,speed:.00014,tilt:-.4,size:2.6,
-   c1:[0.05,0.7,0.55],c2:[0.0,0.28,0.35],gc:'rgba(10,180,140,.55)'},
-  {name:'Planeta Futuro',title:'Nuestro futuro juntos 🌠',
-   msg:'Sueño con todo lo que nos espera,\ncada aventura que vivimos,\ncada noche mirando las estrellas.\n\nContigo quiero construir\nel futuro más bonito del universo.',
-   hearts:'🌠 💙 🌠',r:130,speed:.0001,tilt:.5,size:3.8,
-   c1:[0.3,0.2,0.9],c2:[0.1,0.05,0.5],gc:'rgba(80,60,220,.65)'}
+  {name:'Planeta Amor',title:'Para Aslin, con todo mi corazón 🌹',msg:'Desde el primer momento en que te vi,\nsupe que eras especial.\nEres la razón por la que sonrío cada día,\nla persona que hace que todo valga la pena.\n\nTe amo con cada parte de mí, Aslin.',hearts:'🌹 ♥ 🌹',r:36,speed:.0009,tilt:.2,size:3.2,c1:[.88,.2,.95],c2:[.3,.04,.5],gc:'rgba(200,50,255,.7)'},
+  {name:'Planeta Felicidad',title:'Aslin, eres mi felicidad 🌟',msg:'Contigo aprendí que la felicidad\nno es un lugar al que se llega,\nsino una persona con quien estás.\n\nEsa persona eres tú.\nSiempre tú, siempre Aslin.',hearts:'🌟 ♥ 🌟',r:52,speed:.00055,tilt:-.28,size:2.9,c1:[.1,.55,1.0],c2:[.02,.14,.52],gc:'rgba(20,140,255,.7)'},
+  {name:'Planeta Eternidad',title:'Mi amor por ti no tiene fin ∞',msg:'Como las estrellas que nunca se apagan,\ncomo la galaxia que gira sin cesar,\nmi amor por ti no tiene fin.\n\nAslin, te amaré siempre.\nEn esta vida y en todas las que vengan.',hearts:'♥ ∞ ♥',r:68,speed:.0004,tilt:.42,size:4.1,c1:[.0,.85,.75],c2:[.0,.28,.42],gc:'rgba(0,210,190,.65)'},
+  {name:'Planeta Sueños',title:'Aslin, eres mi sueño real 💫',msg:'Pensé que el amor así solo existía\nen las películas y las canciones.\nHasta que llegaste tú.\n\nEres todo lo que soñé\ny mil cosas más que nunca imaginé.',hearts:'💫 ♥ 💫',r:84,speed:.00028,tilt:-.5,size:3.5,c1:[.55,.08,.92],c2:[.18,.0,.42],gc:'rgba(140,40,240,.7)'},
+  {name:'Planeta Promesas',title:'Mis promesas para ti 🤍',msg:'Te prometo estar siempre,\nen los días de sol y en los de lluvia.\nTe prometo hacerte reír\ncuando más lo necesites.\n\nEres mi mayor promesa cumplida.',hearts:'🤍 💜 🤍',r:100,speed:.00020,tilt:.32,size:3.1,c1:[.9,.68,.28],c2:[.5,.28,.04],gc:'rgba(220,155,40,.6)'},
+  {name:'Planeta Momentos',title:'Cada momento contigo ✨',msg:'Cada mirada, cada risa,\ncada momento junto a ti\nes un tesoro que guardo\nen lo más profundo de mi corazón.\n\nGracias por existir, Aslin.',hearts:'✨ 🌹 ✨',r:115,speed:.00015,tilt:-.38,size:2.7,c1:[.05,.7,.55],c2:[.0,.26,.34],gc:'rgba(10,175,140,.6)'},
+  {name:'Planeta Futuro',title:'Nuestro futuro juntos 🌠',msg:'Sueño con todo lo que nos espera,\ncada aventura que viviremos juntos,\ncada noche mirando las estrellas.\n\nContigo quiero construir\nel futuro más bonito del universo.',hearts:'🌠 💙 🌠',r:130,speed:.00011,tilt:.48,size:3.7,c1:[.28,.18,.9],c2:[.08,.04,.5],gc:'rgba(70,55,220,.7)'},
+  {name:'Planeta Corazón',title:'Aslin, eres mi corazón 💗',msg:'Tú eres el latido que más me gusta,\nel nombre que más me alegra pronunciar,\nla persona que llena de luz\ncada rincón de mi vida.\n\nEres mi corazón, Aslin.',hearts:'💗 🌹 💗',r:146,speed:.000082,tilt:-.58,size:3.0,c1:[.95,.2,.55],c2:[.45,.04,.22],gc:'rgba(240,50,130,.65)'},
+  {name:'Planeta Infinito',title:'Eres mi todo, siempre ♾️',msg:'Si pudiera recorrer todas las galaxias,\nen cada estrella escribiría tu nombre.\nSi pudiera vivir mil vidas,\nen todas te elegiría a ti.\n\nEres mi todo, Aslin. Siempre.',hearts:'♾️ 💜 ♾️',r:162,speed:.000055,tilt:.38,size:4.4,c1:[.5,.0,.85],c2:[.18,.0,.42],gc:'rgba(130,0,210,.7)'}
 ];
+</script>
 
-// ── THREE SETUP ──
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
 var W=window.innerWidth,H=window.innerHeight;
 var scene=new THREE.Scene();
-scene.fog=new THREE.FogExp2(0x00000a,.0011);
+scene.fog=new THREE.FogExp2(0x00000a,.001);
 var cam=new THREE.PerspectiveCamera(68,W/H,.1,100000);
-var camTheta=0,camPhi=.3,camDist=65,autoRot=true;
+
+// ── CAMERA FLY-IN ──
+var camTheta=.3,camPhi=.28,camDist=65,autoRot=true;
+var flyIn=false,flyProgress=0,flyStart=280;
+function startCameraFlyIn(){flyIn=true;flyProgress=0;camDist=flyStart;}
 function updateCam(){
   cam.position.x=camDist*Math.sin(camPhi)*Math.sin(camTheta);
   cam.position.y=camDist*Math.cos(camPhi);
@@ -382,441 +318,404 @@ ren.setClearColor(0x00000f);
 
 // controls
 var isDrag=false,prev={x:0,y:0};
-document.getElementById('c').addEventListener('mousedown',function(e){isDrag=true;prev={x:e.clientX,y:e.clientY};autoRot=false;});
+var cvs=document.getElementById('c');
+cvs.addEventListener('mousedown',function(e){isDrag=true;prev={x:e.clientX,y:e.clientY};autoRot=false;});
 document.addEventListener('mouseup',function(){isDrag=false;});
 document.addEventListener('mousemove',function(e){
   if(!isDrag)return;
   camTheta-=(e.clientX-prev.x)*.005;
-  camPhi=Math.max(.08,Math.min(Math.PI-.08,camPhi-(e.clientY-prev.y)*.005));
+  camPhi=Math.max(.06,Math.min(Math.PI-.06,camPhi-(e.clientY-prev.y)*.005));
   prev={x:e.clientX,y:e.clientY};updateCam();
 });
-document.getElementById('c').addEventListener('wheel',function(e){
-  camDist=Math.max(5,Math.min(260,camDist+e.deltaY*.05));updateCam();
-});
+cvs.addEventListener('wheel',function(e){camDist=Math.max(4,Math.min(280,camDist+e.deltaY*.05));updateCam();},{passive:true});
 var t0n=null;
-document.getElementById('c').addEventListener('touchstart',function(e){t0n=e.touches[0];autoRot=false;},{passive:true});
-document.getElementById('c').addEventListener('touchmove',function(e){
+cvs.addEventListener('touchstart',function(e){t0n=e.touches[0];autoRot=false;},{passive:true});
+cvs.addEventListener('touchmove',function(e){
   if(!t0n)return;var t1=e.touches[0];
   camTheta-=(t1.clientX-t0n.clientX)*.005;
-  camPhi=Math.max(.08,Math.min(Math.PI-.08,camPhi-(t1.clientY-t0n.clientY)*.005));
+  camPhi=Math.max(.06,Math.min(Math.PI-.06,camPhi-(t1.clientY-t0n.clientY)*.005));
   t0n=t1;updateCam();
 },{passive:true});
 
-// ── GLOW ──
-function makeGlow(color,size,op){
-  size=size||128;op=op||.55;
-  var cv=document.createElement('canvas');cv.width=cv.height=size;
+// glow helper
+function makeGlow(color,sz,op){
+  sz=sz||128;op=op||.55;
+  var cv=document.createElement('canvas');cv.width=cv.height=sz;
   var ctx=cv.getContext('2d');
-  var g=ctx.createRadialGradient(size/2,size/2,0,size/2,size/2,size/2);
+  var g=ctx.createRadialGradient(sz/2,sz/2,0,sz/2,sz/2,sz/2);
   g.addColorStop(0,color);g.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=g;ctx.fillRect(0,0,size,size);
-  return new THREE.Sprite(new THREE.SpriteMaterial({
-    map:new THREE.CanvasTexture(cv),transparent:true,opacity:op,
-    depthWrite:false,blending:THREE.AdditiveBlending
-  }));
+  ctx.fillStyle=g;ctx.fillRect(0,0,sz,sz);
+  return new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(cv),transparent:true,opacity:op,depthWrite:false,blending:THREE.AdditiveBlending}));
 }
 
 // ── NEBULAE ──
-// Mix: crimson-red + deep blue + purple nebulae
-var nbc=[
-  'rgba(80,20,200,.5)','rgba(220,20,60,.45)','rgba(0,90,220,.5)',
-  'rgba(180,10,40,.42)','rgba(180,50,255,.42)','rgba(40,0,160,.52)',
-  'rgba(220,30,80,.4)','rgba(100,0,210,.48)','rgba(255,60,100,.3)',
-  'rgba(60,190,255,.33)','rgba(150,60,255,.38)','rgba(200,0,60,.32)',
-  'rgba(200,90,255,.32)','rgba(80,40,190,.48)','rgba(0,150,230,.38)',
-  'rgba(255,30,60,.22)','rgba(140,0,80,.38)','rgba(200,100,255,.28)',
-  'rgba(100,240,200,.2)','rgba(180,20,60,.3)'
-];
+var nbc=['rgba(90,20,210,.52)','rgba(210,15,55,.48)','rgba(0,80,220,.52)','rgba(190,40,255,.42)','rgba(40,0,165,.54)','rgba(220,25,75,.42)','rgba(0,160,220,.38)','rgba(160,60,255,.42)','rgba(255,55,95,.32)','rgba(55,185,255,.35)','rgba(140,60,255,.4)','rgba(200,0,55,.3)','rgba(0,210,175,.28)','rgba(190,90,255,.3)','rgba(85,35,195,.48)','rgba(255,100,160,.25)','rgba(130,0,180,.38)','rgba(0,140,255,.38)','rgba(210,20,60,.25)','rgba(100,230,200,.2)'];
 for(var i=0;i<20;i++){
-  var nb=makeGlow(nbc[i],320,.48);nb.scale.set(120,120,1);
-  nb.position.set((Math.random()-.5)*220,(Math.random()-.5)*130,(Math.random()-.5)*220);
+  var nb=makeGlow(nbc[i],320,.48);nb.scale.set(115+Math.random()*50,115+Math.random()*50,1);
+  nb.position.set((Math.random()-.5)*240,(Math.random()-.5)*120,(Math.random()-.5)*240);
   scene.add(nb);
 }
-// core glows: purple + red + blue
-var cg=makeGlow('rgba(140,80,255,.85)',256,.52);cg.scale.set(12,12,1);scene.add(cg);
-var cg2=makeGlow('rgba(0,180,255,.65)',256,.38);cg2.scale.set(16,16,1);scene.add(cg2);
-var cg3=makeGlow('rgba(220,20,60,.7)',256,.35);cg3.scale.set(10,10,1);scene.add(cg3);
-var cg4=makeGlow('rgba(255,60,120,.5)',256,.28);cg4.scale.set(7,7,1);scene.add(cg4);
+[['rgba(155,70,255,.9)',16],['rgba(0,180,255,.65)',22],['rgba(220,20,60,.65)',14],['rgba(255,60,120,.45)',10]].forEach(function(g){
+  var s=makeGlow(g[0],256,.5);s.scale.set(g[1],g[1],1);scene.add(s);
+});
 
-// ── GALAXY PARTICLES ──
-var N=110000,arms=6,radius=120,spin=.52,rndP=17;
+// ── GALAXY ──
+var N=130000,arms=6,radius=125,spin=.52,rndP=17;
 var pos3=new Float32Array(N*3),col3=new Float32Array(N*3),cnt=0;
 for(var i=0;i<N;i++){
   var r=Math.pow(Math.random(),rndP)*radius;
-  if(r<26&&Math.random()<.72)continue;
-  var ba=(i%arms)/arms*Math.PI*2,sa=r*spin*(.75+Math.random()*.5);
-  var sc2b=(.14+r/radius*.28)*r;
-  var rx=(Math.random()-.5)*sc2b,ry=(Math.random()-.5)*.16*r,rz=(Math.random()-.5)*sc2b;
-  var ta=ba+sa;
+  if(r<24&&Math.random()<.73)continue;
+  var ba=(i%arms)/arms*Math.PI*2,sa=r*spin*(.8+Math.random()*.4);
+  var sc2=(.12+r/radius*.26)*r;
   var i3=cnt*3;
-  pos3[i3]=Math.cos(ta)*r+rx;pos3[i3+1]=ry;pos3[i3+2]=Math.sin(ta)*r+rz;
-  var t=r/radius,mr,mg,mb;
-  // galaxy arms: warm white core → blue-white → blue-purple → crimson-purple outer
-  var armMix=Math.abs(Math.sin((i%arms)/arms*Math.PI*3));// varies per arm
-  if(t<.12){mr=1;mg=.95;mb=.82;}// core: warm white
-  else if(t<.32){
-    // inner: blue-white mixed with hints of red in some arms
-    mr=.6+t*.5+armMix*.15;mg=.7+t*.2;mb=1.0;
-  }else if(t<.6){
-    // mid: blue-purple with red tones
-    mr=.45+t*.42+armMix*.2;mg=.18+t*.22;mb=.82+t*.1;
-  }else{
-    // outer: crimson-purple
-    mr=.5+t*.35+armMix*.18;mg=.05+t*.08;mb=.42+t*.18;
-  }
-  var sc=.55+.45*Math.random();
+  pos3[i3]=Math.cos(ba+sa)*r+(Math.random()-.5)*sc2;
+  pos3[i3+1]=(Math.random()-.5)*.14*r;
+  pos3[i3+2]=Math.sin(ba+sa)*r+(Math.random()-.5)*sc2;
+  var t=r/radius,armMix=Math.abs(Math.sin((i%arms)/arms*Math.PI*3)),mr,mg,mb;
+  if(t<.1){mr=1;mg=.96;mb=.85;}
+  else if(t<.3){mr=.6+t*.45+armMix*.12;mg=.7+t*.18;mb=1.0;}
+  else if(t<.58){mr=.45+t*.38+armMix*.18;mg=.17+t*.2;mb=.82+t*.12;}
+  else{mr=.52+t*.32+armMix*.15;mg=.04+t*.07;mb=.4+t*.2;}
+  var sc=.52+.48*Math.random();
   col3[i3]=mr*sc;col3[i3+1]=mg*sc;col3[i3+2]=mb*sc;
   cnt++;
 }
 var gg=new THREE.BufferGeometry();
 gg.setAttribute('position',new THREE.BufferAttribute(pos3.slice(0,cnt*3),3));
 gg.setAttribute('color',new THREE.BufferAttribute(col3.slice(0,cnt*3),3));
-var gpts=new THREE.Points(gg,new THREE.PointsMaterial({
-  size:.28,sizeAttenuation:true,vertexColors:true,
-  depthWrite:false,blending:THREE.AdditiveBlending,transparent:true,opacity:.95
-}));
+var gpts=new THREE.Points(gg,new THREE.PointsMaterial({size:.26,sizeAttenuation:true,vertexColors:true,depthWrite:false,blending:THREE.AdditiveBlending,transparent:true,opacity:.95}));
 scene.add(gpts);
 
 // ── BACKGROUND STARS ──
-var sg=new THREE.BufferGeometry(),sp2=new Float32Array(25000*3),sc2c=new Float32Array(25000*3);
-for(var i=0;i<25000;i++){
-  sp2[i*3]=(Math.random()-.5)*1400;sp2[i*3+1]=(Math.random()-.5)*1400;sp2[i*3+2]=(Math.random()-.5)*1400;
-  var rn=Math.random();
-  if(rn<.33){sc2c[i*3]=1;sc2c[i*3+1]=.95;sc2c[i*3+2]=.82;}
-  else if(rn<.66){sc2c[i*3]=.7;sc2c[i*3+1]=.85;sc2c[i*3+2]=1;}
-  else{sc2c[i*3]=.9;sc2c[i*3+1]=.65;sc2c[i*3+2]=1;}
+var sg=new THREE.BufferGeometry(),sp2=new Float32Array(30000*3),sc2c=new Float32Array(30000*3);
+var starTypes=[[1,.95,.82],[.7,.85,1],[.9,.65,1],[1,.8,.85],[.6,.95,.88]];
+for(var i=0;i<30000;i++){
+  sp2[i*3]=(Math.random()-.5)*1600;sp2[i*3+1]=(Math.random()-.5)*1600;sp2[i*3+2]=(Math.random()-.5)*1600;
+  var st2=starTypes[Math.floor(Math.random()*starTypes.length)];
+  sc2c[i*3]=st2[0];sc2c[i*3+1]=st2[1];sc2c[i*3+2]=st2[2];
 }
 sg.setAttribute('position',new THREE.BufferAttribute(sp2,3));
 sg.setAttribute('color',new THREE.BufferAttribute(sc2c,3));
-scene.add(new THREE.Points(sg,new THREE.PointsMaterial({size:.42,transparent:true,opacity:.72,depthWrite:false,vertexColors:true})));
+scene.add(new THREE.Points(sg,new THREE.PointsMaterial({size:.4,transparent:true,opacity:.7,depthWrite:false,vertexColors:true})));
+
+// ── ASTEROID BELT ──
+var astGeo=new THREE.BufferGeometry();var astPos=new Float32Array(3000*3);var astCol=new Float32Array(3000*3);
+for(var i=0;i<3000;i++){
+  var a=Math.random()*Math.PI*2,rAst=22+Math.random()*6;
+  astPos[i*3]=Math.cos(a)*rAst+(Math.random()-.5)*4;
+  astPos[i*3+1]=(Math.random()-.5)*2.5;
+  astPos[i*3+2]=Math.sin(a)*rAst+(Math.random()-.5)*4;
+  var br=.5+Math.random()*.5;
+  astCol[i*3]=.7*br;astCol[i*3+1]=.6*br;astCol[i*3+2]=.5*br;
+}
+astGeo.setAttribute('position',new THREE.BufferAttribute(astPos,3));
+astGeo.setAttribute('color',new THREE.BufferAttribute(astCol,3));
+var asteroidBelt=new THREE.Points(astGeo,new THREE.PointsMaterial({size:.35,vertexColors:true,transparent:true,opacity:.65,depthWrite:false}));
+scene.add(asteroidBelt);
 
 // ── PLANET TEXTURE ──
 function makeTex(rgb1,rgb2){
-  var sz=512;
-  var cv=document.createElement('canvas');cv.width=cv.height=sz;
+  var sz=512;var cv=document.createElement('canvas');cv.width=cv.height=sz;
   var ctx=cv.getContext('2d');
   function c(rgb,a){return 'rgba('+Math.round(rgb[0]*255)+','+Math.round(rgb[1]*255)+','+Math.round(rgb[2]*255)+','+(a||1)+')';}
-  function mix(a,b,t){return [a[0]*(1-t)+b[0]*t,a[1]*(1-t)+b[1]*t,a[2]*(1-t)+b[2]*t];}
-  var g=ctx.createRadialGradient(sz*.37,sz*.33,0,sz/2,sz/2,sz*.52);
-  g.addColorStop(0,c(mix(rgb1,[1,1,1],.3)));
-  g.addColorStop(.35,c(rgb1));
-  g.addColorStop(.65,c(mix(rgb1,rgb2,.5)));
-  g.addColorStop(.88,c(rgb2));
-  g.addColorStop(1,c([0,0,0]));
+  function mix(a,b,t){return[a[0]*(1-t)+b[0]*t,a[1]*(1-t)+b[1]*t,a[2]*(1-t)+b[2]*t];}
+  var g=ctx.createRadialGradient(sz*.36,sz*.32,0,sz/2,sz/2,sz*.52);
+  g.addColorStop(0,c(mix(rgb1,[1,1,1],.35)));g.addColorStop(.3,c(rgb1));
+  g.addColorStop(.62,c(mix(rgb1,rgb2,.5)));g.addColorStop(.88,c(rgb2));g.addColorStop(1,'rgba(0,0,0,1)');
   ctx.fillStyle=g;ctx.fillRect(0,0,sz,sz);
-  // bands
-  for(var k=0;k<10;k++){
-    ctx.beginPath();ctx.moveTo(0,sz*.04+k*sz*.1);
-    ctx.bezierCurveTo(sz*.25,sz*.01+k*sz*.1,sz*.75,sz*.07+k*sz*.1,sz,sz*.04+k*sz*.1);
-    var ba=.05+Math.random()*.11;
-    ctx.strokeStyle='rgba(255,255,255,'+ba+')';ctx.lineWidth=5+Math.random()*10;ctx.stroke();
+  for(var k=0;k<12;k++){
+    ctx.beginPath();ctx.moveTo(0,sz*(.03+k*.082));
+    ctx.bezierCurveTo(sz*.22,sz*(-.01+k*.082),sz*.78,sz*(.06+k*.082),sz,sz*(.03+k*.082));
+    ctx.strokeStyle='rgba(255,255,255,'+(0.04+Math.random()*.1)+')';ctx.lineWidth=4+Math.random()*9;ctx.stroke();
   }
-  // specular
-  var sp=ctx.createRadialGradient(sz*.3,sz*.28,0,sz*.3,sz*.28,sz*.24);
+  var sp=ctx.createRadialGradient(sz*.3,sz*.27,0,sz*.3,sz*.27,sz*.22);
   sp.addColorStop(0,'rgba(255,255,255,.42)');sp.addColorStop(1,'rgba(255,255,255,0)');
   ctx.fillStyle=sp;ctx.fillRect(0,0,sz,sz);
-  // limb dark
-  var ld=ctx.createRadialGradient(sz*.52,sz*.54,sz*.28,sz/2,sz/2,sz*.53);
-  ld.addColorStop(0,'rgba(0,0,0,0)');ld.addColorStop(1,'rgba(0,0,0,.6)');
+  var ld=ctx.createRadialGradient(sz*.52,sz*.54,sz*.26,sz/2,sz/2,sz*.52);
+  ld.addColorStop(0,'rgba(0,0,0,0)');ld.addColorStop(1,'rgba(0,0,0,.62)');
   ctx.fillStyle=ld;ctx.fillRect(0,0,sz,sz);
   return new THREE.CanvasTexture(cv);
 }
 
 // ── MAIN PLANET ──
-var mainPlanet=new THREE.Mesh(
-  new THREE.SphereGeometry(10,64,64),
-  new THREE.MeshStandardMaterial({map:makeTex([.38,.08,.9],[.08,0,.38]),roughness:.62,metalness:.08})
-);
+var mainPlanet=new THREE.Mesh(new THREE.SphereGeometry(10,64,64),new THREE.MeshStandardMaterial({map:makeTex([.36,.06,.9],[.07,0,.36]),roughness:.6,metalness:.1}));
 scene.add(mainPlanet);
-scene.add(new THREE.Mesh(
-  new THREE.SphereGeometry(10.9,32,32),
-  new THREE.MeshBasicMaterial({color:0x6020ff,transparent:true,opacity:.13,side:THREE.BackSide,blending:THREE.AdditiveBlending})
-));
-// ring
-var rg=new THREE.RingGeometry(13,19,128);
-var rCv=document.createElement('canvas');rCv.width=512;rCv.height=64;
-var rC=rCv.getContext('2d');
-var rGr=rC.createLinearGradient(0,0,512,0);
-rGr.addColorStop(0,'rgba(140,80,255,0)');rGr.addColorStop(.2,'rgba(170,110,255,.52)');
-rGr.addColorStop(.5,'rgba(120,200,255,.38)');rGr.addColorStop(.8,'rgba(100,180,255,.52)');rGr.addColorStop(1,'rgba(100,180,255,0)');
-rC.fillStyle=rGr;rC.fillRect(0,0,512,64);
-var ring=new THREE.Mesh(rg,new THREE.MeshBasicMaterial({
-  map:new THREE.CanvasTexture(rCv),transparent:true,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending
-}));
-ring.rotation.x=Math.PI*.4;scene.add(ring);
+scene.add(new THREE.Mesh(new THREE.SphereGeometry(10.95,32,32),new THREE.MeshBasicMaterial({color:0x6020ff,transparent:true,opacity:.13,side:THREE.BackSide,blending:THREE.AdditiveBlending})));
+
+// rings (3 rings on main planet)
+function addPlanetRing(inner,outer,col,op,tilt){
+  var rCv=document.createElement('canvas');rCv.width=512;rCv.height=64;
+  var rC=rCv.getContext('2d');
+  var rGr=rC.createLinearGradient(0,0,512,0);
+  rGr.addColorStop(0,'rgba(0,0,0,0)');rGr.addColorStop(.2,col+'.55)');
+  rGr.addColorStop(.5,col+'.35)');rGr.addColorStop(.8,col+'.55)');rGr.addColorStop(1,'rgba(0,0,0,0)');
+  rC.fillStyle=rGr;rC.fillRect(0,0,512,64);
+  var ring=new THREE.Mesh(new THREE.RingGeometry(inner,outer,128),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(rCv),transparent:true,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));
+  ring.rotation.x=tilt;
+  ring._rotSpeed=.0005+Math.random()*.0008;
+  scene.add(ring);
+  return ring;
+}
+var rings=[
+  addPlanetRing(13.5,18,'rgba(160,100,255',Math.PI*.38),
+  addPlanetRing(19,22,'rgba(100,180,255',Math.PI*.42),
+  addPlanetRing(23,25.5,'rgba(255,80,160',Math.PI*.33)
+];
+
+// ── MOON orbiting main planet ──
+var moon=new THREE.Mesh(new THREE.SphereGeometry(1.8,24,24),new THREE.MeshStandardMaterial({map:makeTex([.7,.72,.75],[.3,.32,.34]),roughness:.9}));
+scene.add(moon);
+var moonGlow=makeGlow('rgba(200,220,255,.7)',64,.45);moonGlow.scale.set(4,4,1);moon.add(moonGlow);
+var moonAngle=0;
 
 // ── TEXT RINGS ──
-var ringTxts=['Te amo, Aslin','Eres mi todo','Mi amor eterno','Solo tú, Aslin ♥','Para siempre contigo'];
+var ringTxts=['Te amo, Aslin 🌹','Eres mi todo','Mi amor eterno','Solo tú, Aslin ♥','Para siempre contigo'];
 var textRings=[];
 var ringColors=['#a855f7','#38bdf8','#818cf8','#f472b6','#34d399'];
 for(var i=0;i<ringTxts.length;i++){
-  var rR=11+i*5.2,fS=100,tH=140;
+  var rR=11.5+i*5.4,fS=100,tH=145;
   var tmp=document.createElement('canvas');tmp.width=tmp.height=200;
   var tctx=tmp.getContext('2d');tctx.font='bold '+fS+'px Georgia,serif';
   var seg=ringTxts[i]+'   ✦   ';
   var sw=tctx.measureText(seg).width;
-  var circ=2*Math.PI*rR*165;
-  var rep=Math.ceil(circ/sw);var full='';
-  for(var j=0;j<rep;j++)full+=seg;
+  var circ=2*Math.PI*rR*168;
+  var rep=Math.ceil(circ/sw);var full='';for(var j=0;j<rep;j++)full+=seg;
   var tw=Math.ceil(sw*rep);
   var tc=document.createElement('canvas');tc.width=tw;tc.height=tH;
   var rctx=tc.getContext('2d');
   rctx.font='bold '+fS+'px Georgia,serif';rctx.textAlign='left';rctx.textBaseline='alphabetic';
   var rc=ringColors[i%ringColors.length];
-  rctx.shadowColor=rc;rctx.shadowBlur=32;rctx.lineWidth=9;rctx.strokeStyle='rgba(0,0,0,.35)';
-  rctx.strokeText(full,0,tH*.82);
+  rctx.shadowColor=rc;rctx.shadowBlur=35;rctx.lineWidth=9;rctx.strokeStyle='rgba(0,0,0,.4)';rctx.strokeText(full,0,tH*.82);
   rctx.fillStyle=rc;rctx.fillText(full,0,tH*.82);
-  rctx.shadowBlur=10;rctx.fillStyle='rgba(255,255,255,.55)';rctx.fillText(full,0,tH*.82);
-  var rt=new THREE.CanvasTexture(tc);
-  rt.wrapS=THREE.RepeatWrapping;rt.repeat.x=tw/circ;
-  var rm=new THREE.Mesh(new THREE.CylinderGeometry(rR,rR,1.1,128,1,true),
-    new THREE.MeshBasicMaterial({map:rt,transparent:true,side:THREE.DoubleSide,alphaTest:.01,depthWrite:false}));
+  rctx.shadowBlur=12;rctx.fillStyle='rgba(255,255,255,.55)';rctx.fillText(full,0,tH*.82);
+  var rt=new THREE.CanvasTexture(tc);rt.wrapS=THREE.RepeatWrapping;rt.repeat.x=tw/circ;
+  var rm=new THREE.Mesh(new THREE.CylinderGeometry(rR,rR,1.1,128,1,true),new THREE.MeshBasicMaterial({map:rt,transparent:true,side:THREE.DoubleSide,alphaTest:.01,depthWrite:false}));
   rm.rotation.y=Math.PI/2;
-  var rg2=new THREE.Group();rg2.add(rm);
-  rg2.rotation.x=i/ringTxts.length*Math.PI;
-  rg2._off=i*.45;rg2._sp=.002+i*.0004;
-  scene.add(rg2);textRings.push(rg2);
+  var rg2=new THREE.Group();rg2.add(rm);rg2.rotation.x=i/ringTxts.length*Math.PI;
+  rg2._off=i*.45;rg2._sp=.002+i*.0004;scene.add(rg2);textRings.push(rg2);
 }
 
 // ── MAIN TEXT ──
 (function(){
-  var W2=2000,H2=260;
-  var cv=document.createElement('canvas');cv.width=W2;cv.height=H2;
-  var ctx=cv.getContext('2d');
-  ctx.font='bold 94px Georgia,serif';
-  var txt='Te amo mucho, Aslin \u{1F495}';
+  var TW=2100,TH=280;var cv=document.createElement('canvas');cv.width=TW;cv.height=TH;
+  var ctx=cv.getContext('2d');ctx.font='bold 98px Georgia,serif';
+  var txt='Te amo mucho, Aslin \uD83D\uDC95';
   ctx.textAlign='center';ctx.textBaseline='middle';
-  var tg=ctx.createLinearGradient(0,0,W2,0);
-  tg.addColorStop(0,'#a855f7');tg.addColorStop(.25,'#818cf8');
-  tg.addColorStop(.5,'#38bdf8');tg.addColorStop(.75,'#f0abfc');tg.addColorStop(1,'#a855f7');
-  ctx.shadowColor='#7b2fff';ctx.shadowBlur=65;
-  ctx.lineWidth=8;ctx.strokeStyle='rgba(5,0,30,.5)';ctx.strokeText(txt,W2/2,H2/2);
-  ctx.fillStyle=tg;ctx.fillText(txt,W2/2,H2/2);
-  ctx.shadowBlur=22;ctx.fillStyle='rgba(255,255,255,.45)';ctx.fillText(txt,W2/2,H2/2);
+  var tg=ctx.createLinearGradient(0,0,TW,0);
+  tg.addColorStop(0,'#a855f7');tg.addColorStop(.22,'#818cf8');tg.addColorStop(.45,'#38bdf8');
+  tg.addColorStop(.68,'#f0abfc');tg.addColorStop(.85,'#ffd6e0');tg.addColorStop(1,'#a855f7');
+  ctx.shadowColor='#7b2fff';ctx.shadowBlur=72;ctx.lineWidth=9;ctx.strokeStyle='rgba(4,0,28,.55)';ctx.strokeText(txt,TW/2,TH/2);
+  ctx.fillStyle=tg;ctx.fillText(txt,TW/2,TH/2);ctx.shadowBlur=26;ctx.fillStyle='rgba(255,255,255,.42)';ctx.fillText(txt,TW/2,TH/2);
   var mat=new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(cv),transparent:true,side:THREE.DoubleSide,depthWrite:false});
-  var m=new THREE.Mesh(new THREE.PlaneGeometry(46,7),mat);
-  m.position.set(0,27,0);scene.add(m);
-  window._mainTxt=m;
+  var m=new THREE.Mesh(new THREE.PlaneGeometry(48,7.2),mat);m.position.set(0,28,0);scene.add(m);window._mainTxt=m;
 })();
 
 // ── ORBITAL PLANETS ──
 var orbitMeshes=[];
 for(var i=0;i<PLANETS.length;i++){
   var pd=PLANETS[i];
-  var pm=new THREE.Mesh(
-    new THREE.SphereGeometry(pd.size,48,48),
-    new THREE.MeshStandardMaterial({map:makeTex(pd.c1,pd.c2),roughness:.58,metalness:.06})
-  );
+  var pm=new THREE.Mesh(new THREE.SphereGeometry(pd.size,48,48),new THREE.MeshStandardMaterial({map:makeTex(pd.c1,pd.c2),roughness:.56,metalness:.08}));
   pm._pd=pd;pm._angle=(i/PLANETS.length)*Math.PI*2;
   // label
-  var lc=document.createElement('canvas');lc.width=520;lc.height=100;
-  var lctx=lc.getContext('2d');
-  lctx.font='bold 38px Georgia,serif';lctx.textAlign='center';lctx.textBaseline='middle';
-  lctx.shadowColor=pd.gc;lctx.shadowBlur=22;
-  lctx.fillStyle='#e8dcff';lctx.fillText(pd.name,260,50);
+  var lc=document.createElement('canvas');lc.width=580;lc.height=108;
+  var lctx=lc.getContext('2d');lctx.font='bold 40px Georgia,serif';lctx.textAlign='center';lctx.textBaseline='middle';
+  lctx.shadowColor=pd.gc;lctx.shadowBlur=24;lctx.fillStyle='#eedeff';lctx.fillText(pd.name,290,54);
   var ls=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(lc),transparent:true,depthWrite:false}));
-  ls.scale.set(pd.size*5.8,pd.size*1.4,1);ls.position.y=pd.size+2.2;
-  pm.add(ls);
-  // glow
-  var pg=makeGlow(pd.gc,128,.6);pg.scale.set(pd.size*4.2,pd.size*4.2,1);pm.add(pg);
-  // atmosphere halo
-  var atH=new THREE.Mesh(
-    new THREE.SphereGeometry(pd.size*1.18,24,24),
-    new THREE.MeshBasicMaterial({color:new THREE.Color(pd.c1[0]*.5,pd.c1[1]*.5,pd.c1[2]*.5),transparent:true,opacity:.12,side:THREE.BackSide,blending:THREE.AdditiveBlending})
-  );
-  pm.add(atH);
+  ls.scale.set(pd.size*6,pd.size*1.5,1);ls.position.y=pd.size+2.4;pm.add(ls);
+  var pg=makeGlow(pd.gc,128,.62);pg.scale.set(pd.size*4.4,pd.size*4.4,1);pm.add(pg);
+  pm.add(new THREE.Mesh(new THREE.SphereGeometry(pd.size*1.18,24,24),new THREE.MeshBasicMaterial({color:new THREE.Color(pd.c1[0]*.5,pd.c1[1]*.5,pd.c1[2]*.5),transparent:true,opacity:.12,side:THREE.BackSide,blending:THREE.AdditiveBlending})));
+  if(i%3!==1){
+    var pr=new THREE.Mesh(new THREE.RingGeometry(pd.size*1.45,pd.size*2.1,60),new THREE.MeshBasicMaterial({color:new THREE.Color(pd.c1[0],pd.c1[1],pd.c1[2]),transparent:true,opacity:.22,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));
+    pr.rotation.x=Math.PI*.5+.3;pm.add(pr);
+  }
   scene.add(pm);orbitMeshes.push(pm);
 }
 
 // ── LIGHTS ──
-scene.add(new THREE.AmbientLight(0x8866ff,.48));
-var pl1=new THREE.PointLight(0x8866ff,2.4,350);pl1.position.set(0,20,0);scene.add(pl1);
-var pl2=new THREE.PointLight(0x00aaff,1.4,220);pl2.position.set(45,12,45);scene.add(pl2);
-var pl3=new THREE.PointLight(0xff88cc,.8,180);pl3.position.set(-30,10,-30);scene.add(pl3);
+scene.add(new THREE.AmbientLight(0x8866ff,.5));
+var pl1=new THREE.PointLight(0x8866ff,2.5,380);pl1.position.set(0,22,0);scene.add(pl1);
+var pl2=new THREE.PointLight(0x00aaff,1.5,230);pl2.position.set(48,14,48);scene.add(pl2);
+var pl3=new THREE.PointLight(0xff88cc,.9,190);pl3.position.set(-32,12,-32);scene.add(pl3);
+var pl4=new THREE.PointLight(0xff3366,.6,150);pl4.position.set(0,-20,0);scene.add(pl4);
 
-// ── HEART-STARS 3D ──
-function hexToRgba(hex,a){
-  var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
-  return 'rgba('+r+','+g+','+b+','+a+')';
-}
-function makeHeartTex(hexColor){
-  var sz=128;
-  var cv=document.createElement('canvas');cv.width=cv.height=sz;
-  var ctx=cv.getContext('2d');
-  var cx=sz/2,cy=sz*0.48,hw=sz*0.34;
-  ctx.save();
-  // glow aura
+// ── HEART STARS 3D ──
+function makeHeartTex(hex){
+  var sz=128;var cv=document.createElement('canvas');cv.width=cv.height=sz;var ctx=cv.getContext('2d');
+  var cx=sz/2,cy=sz*.48,hw=sz*.33;
+  var r=parseInt(hex.slice(1,3),16),g2=parseInt(hex.slice(3,5),16),b2=parseInt(hex.slice(5,7),16);
+  var rgba=function(a){return 'rgba('+r+','+g2+','+b2+','+a+')';};
   var gr=ctx.createRadialGradient(cx,cy,0,cx,cy,sz*.5);
-  gr.addColorStop(0,hexToRgba(hexColor,.6));
-  gr.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=gr;ctx.fillRect(0,0,sz,sz);
-  // heart path
-  ctx.beginPath();
-  ctx.moveTo(cx,cy+hw*.6);
-  ctx.bezierCurveTo(cx-hw*1.3,cy-.1*hw,cx-hw*1.3,cy-hw,cx-hw*.65,cy-hw);
-  ctx.bezierCurveTo(cx-hw*.2,cy-hw,cx,cy-hw*.5,cx,cy-hw*.15);
-  ctx.bezierCurveTo(cx,cy-hw*.5,cx+hw*.2,cy-hw,cx+hw*.65,cy-hw);
-  ctx.bezierCurveTo(cx+hw*1.3,cy-hw,cx+hw*1.3,cy-.1*hw,cx,cy+hw*.6);
-  ctx.closePath();
-  ctx.shadowColor=hexColor;ctx.shadowBlur=24;
-  ctx.fillStyle=hexColor;ctx.fill();
-  // bright highlight
-  var sp=ctx.createRadialGradient(cx-hw*.18,cy-hw*.15,0,cx,cy,hw);
-  sp.addColorStop(0,'rgba(255,255,255,.75)');sp.addColorStop(1,'rgba(255,255,255,0)');
-  ctx.fillStyle=sp;ctx.fill();
-  ctx.restore();
+  gr.addColorStop(0,rgba(.65));gr.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=gr;ctx.fillRect(0,0,sz,sz);
+  ctx.beginPath();ctx.moveTo(cx,cy+hw*.58);
+  ctx.bezierCurveTo(cx-hw*1.32,cy-.12*hw,cx-hw*1.32,cy-hw,cx-hw*.64,cy-hw);
+  ctx.bezierCurveTo(cx-hw*.18,cy-hw,cx,cy-hw*.48,cx,cy-hw*.14);
+  ctx.bezierCurveTo(cx,cy-hw*.48,cx+hw*.18,cy-hw,cx+hw*.64,cy-hw);
+  ctx.bezierCurveTo(cx+hw*1.32,cy-hw,cx+hw*1.32,cy-.12*hw,cx,cy+hw*.58);
+  ctx.closePath();ctx.shadowColor=hex;ctx.shadowBlur=26;ctx.fillStyle=hex;ctx.fill();
+  var sp=ctx.createRadialGradient(cx-hw*.2,cy-hw*.18,0,cx,cy,hw);
+  sp.addColorStop(0,'rgba(255,255,255,.72)');sp.addColorStop(1,'rgba(255,255,255,0)');ctx.fillStyle=sp;ctx.fill();
   return new THREE.CanvasTexture(cv);
 }
-
-// Hearts: galaxy colors + romantic reds
-var heartColors=['#d946ef','#dc143c','#818cf8','#38bdf8','#f472b6','#ff2255','#a78bfa','#ff4466','#34d399','#fb7185','#ff0040'];
+var heartColors=['#d946ef','#dc143c','#818cf8','#38bdf8','#f472b6','#ff2255','#a78bfa','#ff4466','#34d399','#fb7185','#ff0040','#c084fc','#fbbf24'];
 var heartSprites=[];
-var heartData=[];
-for(var i=0;i<60;i++){
+for(var i=0;i<70;i++){
   var hc=heartColors[i%heartColors.length];
-  var hs=new THREE.Sprite(new THREE.SpriteMaterial({
-    map:makeHeartTex(hc),transparent:true,
-    depthWrite:false,blending:THREE.AdditiveBlending,opacity:.0
-  }));
-  var dist=30+Math.random()*110;
-  var theta=Math.random()*Math.PI*2;
-  var phi=Math.random()*Math.PI;
-  hs.position.set(
-    dist*Math.sin(phi)*Math.cos(theta),
-    (Math.random()-.5)*60,
-    dist*Math.sin(phi)*Math.sin(theta)
-  );
-  var sc=1.8+Math.random()*3.5;
-  hs.scale.set(sc,sc,1);
-  hs._baseScale=sc;
-  hs._phase=Math.random()*Math.PI*2;
-  hs._speed=0.4+Math.random()*0.7;
-  hs._orbitR=dist;
-  hs._orbitTheta=theta;
-  hs._orbitSpeed=(Math.random()-.5)*.0004;
-  hs._yOffset=(Math.random()-.5)*60;
-  hs._yPhase=Math.random()*Math.PI*2;
+  var hs=new THREE.Sprite(new THREE.SpriteMaterial({map:makeHeartTex(hc),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,opacity:0}));
+  var dist=32+Math.random()*130;var theta=Math.random()*Math.PI*2,phi2=Math.random()*Math.PI;
+  hs.position.set(dist*Math.sin(phi2)*Math.cos(theta),(Math.random()-.5)*75,dist*Math.sin(phi2)*Math.sin(theta));
+  var sc=1.6+Math.random()*3.8;hs.scale.set(sc,sc,1);
+  hs._bs=sc;hs._ph=Math.random()*Math.PI*2;hs._sp2=.38+Math.random()*.75;
+  hs._or=dist;hs._ot=theta;hs._os=(Math.random()-.5)*.00042;
+  hs._yo=(Math.random()-.5)*75;hs._yp=Math.random()*Math.PI*2;
   scene.add(hs);heartSprites.push(hs);
 }
 
 // ── SHOOTING STARS ──
 var sstars=[];
-var starPalette=[0x88aaff,0xaa88ff,0x00ddff,0xddaaff,0xffeebb,0xaaffee];
+var starPalette=[0x88aaff,0xaa88ff,0x00ddff,0xddaaff,0xffeebb,0xaaffee,0xff88cc,0xffaa44];
 function makeStar(){
   var s=new THREE.Vector3(-220+Math.random()*110,-110+Math.random()*220,-110+Math.random()*220);
-  var e=new THREE.Vector3(620+Math.random()*200,s.y+(-110+Math.random()*220),s.z+(-110+Math.random()*220));
-  var c1b=new THREE.Vector3(s.x+210+Math.random()*110,s.y+(-55+Math.random()*110),s.z+(-55+Math.random()*110));
-  var c2b=new THREE.Vector3(e.x-210+Math.random()*110,e.y+(-55+Math.random()*110),e.z+(-55+Math.random()*110));
+  var e=new THREE.Vector3(630+Math.random()*200,s.y+(-110+Math.random()*220),s.z+(-110+Math.random()*220));
+  var c1b=new THREE.Vector3(s.x+215+Math.random()*110,s.y+(-55+Math.random()*110),s.z+(-55+Math.random()*110));
+  var c2b=new THREE.Vector3(e.x-215+Math.random()*110,e.y+(-55+Math.random()*110),e.z+(-55+Math.random()*110));
   var curve=new THREE.CubicBezierCurve3(s,c1b,c2b,e);
   var pts=[];for(var j=0;j<60;j++)pts.push(curve.getPoint(j/59));
-  var tgb=new THREE.BufferGeometry().setFromPoints(pts);
   var sc2=starPalette[Math.floor(Math.random()*starPalette.length)];
-  var tl=new THREE.Line(tgb,new THREE.LineBasicMaterial({color:sc2,transparent:true,opacity:.8}));
-  var head=new THREE.Mesh(new THREE.SphereGeometry(1.1,8,8),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,blending:THREE.AdditiveBlending}));
+  var tl=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:sc2,transparent:true,opacity:.82}));
+  var head=new THREE.Mesh(new THREE.SphereGeometry(1.15,8,8),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,blending:THREE.AdditiveBlending}));
   var gr=new THREE.Group();gr.add(tl);gr.add(head);
   gr._curve=curve;gr._prog=0;gr._sp=.001+Math.random()*.0013;gr._life=0;gr._ml=300;gr._tl=tl;gr._head=head;gr._pts=pts;
   scene.add(gr);sstars.push(gr);
 }
-makeStar();makeStar();makeStar();makeStar();
+makeStar();makeStar();makeStar();makeStar();makeStar();
+
+// ── PULSE WAVE (2D ripple canvas) ──
+var ripCanvas=document.getElementById('ripple-canvas');
+ripCanvas.width=W;ripCanvas.height=H;
+var ripCtx=ripCanvas.getContext('2d');
+var pulses=[];
+function triggerPulse(){
+  pulses.push({r:0,maxR:Math.max(W,H)*.75,op:1,color:'rgba(160,80,255,'});
+}
+setInterval(triggerPulse,4000);
+function drawPulses(){
+  ripCtx.clearRect(0,0,W,H);
+  for(var i=pulses.length-1;i>=0;i--){
+    var p=pulses[i];
+    p.r+=2.5;p.op=Math.max(0,1-p.r/p.maxR);
+    if(p.op<=0){pulses.splice(i,1);continue;}
+    ripCtx.beginPath();ripCtx.arc(W/2,H/2,p.r,0,Math.PI*2);
+    ripCtx.strokeStyle=p.color+p.op.toFixed(2)+')';
+    ripCtx.lineWidth=2;ripCtx.stroke();
+  }
+}
 
 // ── RAYCASTER ──
 var ray=new THREE.Raycaster(),mouse2=new THREE.Vector2(),tip=document.getElementById('tip');
-document.getElementById('c').addEventListener('mousemove',function(e){
+cvs.addEventListener('mousemove',function(e){
   mouse2.x=(e.clientX/W)*2-1;mouse2.y=-(e.clientY/H)*2+1;
   ray.setFromCamera(mouse2,cam);
   var hits=ray.intersectObjects(orbitMeshes,false);
   if(hits.length){
-    document.getElementById('c').style.cursor='pointer';
-    tip.style.display='block';tip.style.left=(e.clientX+14)+'px';tip.style.top=(e.clientY-10)+'px';
-    tip.textContent='✦ '+hits[0].object._pd.name+' — ¡toca!';
-  }else{
-    document.getElementById('c').style.cursor='default';tip.style.display='none';
-  }
+    cvs.style.cursor='pointer';tip.style.display='block';
+    tip.style.left=(e.clientX+14)+'px';tip.style.top=(e.clientY-10)+'px';
+    tip.textContent='🌹 '+hits[0].object._pd.name+' — ¡toca!';
+  }else{cvs.style.cursor='default';tip.style.display='none';}
 });
-document.getElementById('c').addEventListener('click',function(e){
+cvs.addEventListener('click',function(e){
   if(document.getElementById('overlay').classList.contains('open'))return;
   mouse2.x=(e.clientX/W)*2-1;mouse2.y=-(e.clientY/H)*2+1;
   ray.setFromCamera(mouse2,cam);
   var hits=ray.intersectObjects(orbitMeshes,false);
   if(hits.length)openLetter(hits[0].object._pd);
 });
-document.getElementById('c').addEventListener('touchend',function(e){
+cvs.addEventListener('touchend',function(e){
   if(document.getElementById('overlay').classList.contains('open'))return;
   var tc=e.changedTouches[0];
   mouse2.x=(tc.clientX/W)*2-1;mouse2.y=-(tc.clientY/H)*2+1;
   ray.setFromCamera(mouse2,cam);
   var hits=ray.intersectObjects(orbitMeshes,false);
   if(hits.length)openLetter(hits[0].object._pd);
-});
+},{passive:true});
 
 // ── ANIMATE ──
 var clock=new THREE.Clock();
 function animate(){
   requestAnimationFrame(animate);
   var t=clock.getElapsedTime();
-  if(autoRot){camTheta+=.0016;updateCam();}
+
+  // camera fly-in
+  if(flyIn){
+    flyProgress=Math.min(1,flyProgress+.005);
+    var ease=1-Math.pow(1-flyProgress,4);
+    camDist=flyStart+(65-flyStart)*ease;
+    if(flyProgress>=1)flyIn=false;
+    updateCam();
+  }
+  if(autoRot&&!flyIn){camTheta+=.0016;updateCam();}
 
   mainPlanet.rotation.y+=.0028;
-  ring.rotation.z+=.0008;
+  asteroidBelt.rotation.y+=.0006;
+  rings.forEach(function(r,i){r.rotation.z+=r._rotSpeed*(i%2===0?1:-1);});
+  gpts.rotation.y+=.00022;
 
+  // moon orbit
+  moonAngle+=.008;
+  moon.position.x=Math.cos(moonAngle)*16;
+  moon.position.z=Math.sin(moonAngle)*16;
+  moon.position.y=Math.sin(moonAngle*.7)*3;
+
+  // main text
   if(window._mainTxt){
     window._mainTxt.lookAt(cam.position);
-    window._mainTxt.material.opacity=.75+Math.sin(t*2.4)*.25;
-    window._mainTxt.position.y=27+Math.sin(t*1.7)*.8;
+    window._mainTxt.material.opacity=.72+Math.sin(t*2.4)*.28;
+    window._mainTxt.position.y=28+Math.sin(t*1.7)*.9;
   }
 
+  // text rings
   for(var i=0;i<textRings.length;i++){
-    var rgx=textRings[i];
-    rgx._off+=rgx._sp;
-    rgx.rotation.x=i/textRings.length*Math.PI;
-    rgx.rotation.y=rgx._off;
+    var rgx=textRings[i];rgx._off+=rgx._sp;
+    rgx.rotation.x=i/textRings.length*Math.PI;rgx.rotation.y=rgx._off;
   }
 
+  // orbital planets
   for(var i=0;i<orbitMeshes.length;i++){
     var pm=orbitMeshes[i],pd=pm._pd;
     pm._angle+=pd.speed;
     pm.position.x=Math.cos(pm._angle)*pd.r;
     pm.position.z=Math.sin(pm._angle)*pd.r;
-    pm.position.y=Math.sin(pm._angle+pd.tilt)*10;
+    pm.position.y=Math.sin(pm._angle+pd.tilt)*11;
     pm.rotation.y+=.007;
   }
 
-  gpts.rotation.y+=.00025;
-
+  // shooting stars
   for(var i=sstars.length-1;i>=0;i--){
     var st=sstars[i];st._life++;
     var op=1;
-    if(st._life<30)op=st._life/30;
-    else if(st._life>st._ml-30)op=(st._ml-st._life)/30;
+    if(st._life<30)op=st._life/30;else if(st._life>st._ml-30)op=(st._ml-st._life)/30;
     st._prog+=st._sp;
     if(st._prog>1){scene.remove(st);sstars.splice(i,1);continue;}
-    var cp=st._curve.getPoint(st._prog);
-    st.position.copy(cp);
+    var cp=st._curve.getPoint(st._prog);st.position.copy(cp);
     st._head.material.opacity=op;
     var tp=st._pts;tp[0].copy(cp);
     for(var j=1;j<60;j++)tp[j].copy(st._curve.getPoint(Math.max(0,st._prog-j*.012)));
-    st._tl.geometry.setFromPoints(tp);
-    st._tl.material.opacity=op*.78;
+    st._tl.geometry.setFromPoints(tp);st._tl.material.opacity=op*.8;
   }
-  if(sstars.length<5&&Math.random()<.028)makeStar();
+  if(sstars.length<6&&Math.random()<.028)makeStar();
 
-  // ── ANIMATE HEART-STARS ──
+  // heart stars
   for(var i=0;i<heartSprites.length;i++){
     var hs=heartSprites[i];
-    // pulse opacity (twinkle)
-    var pulse=0.35+0.65*Math.abs(Math.sin(t*hs._speed+hs._phase));
-    hs.material.opacity=pulse;
-    // pulse scale (heartbeat)
-    var beat=hs._baseScale*(1+0.18*Math.sin(t*hs._speed*2+hs._phase));
+    hs.material.opacity=.3+.7*Math.abs(Math.sin(t*hs._sp2+hs._ph));
+    var beat=hs._bs*(1+.18*Math.sin(t*hs._sp2*2+hs._ph));
     hs.scale.set(beat,beat,1);
-    // slow drift orbit
-    hs._orbitTheta+=hs._orbitSpeed;
-    hs.position.x=Math.cos(hs._orbitTheta)*hs._orbitR;
-    hs.position.z=Math.sin(hs._orbitTheta)*hs._orbitR;
-    // gentle float up/down
-    hs.position.y=hs._yOffset+Math.sin(t*0.22+hs._yPhase)*6;
+    hs._ot+=hs._os;
+    hs.position.x=Math.cos(hs._ot)*hs._or;
+    hs.position.z=Math.sin(hs._ot)*hs._or;
+    hs.position.y=hs._yo+Math.sin(t*.22+hs._yp)*6;
   }
 
+  drawPulses();
   ren.render(scene,cam);
 }
 updateCam();animate();
@@ -824,6 +723,7 @@ updateCam();animate();
 window.addEventListener('resize',function(){
   W=window.innerWidth;H=window.innerHeight;
   cam.aspect=W/H;cam.updateProjectionMatrix();ren.setSize(W,H);
+  ripCanvas.width=W;ripCanvas.height=H;
 });
 </script>
 </body>
